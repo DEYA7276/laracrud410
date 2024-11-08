@@ -26,13 +26,14 @@ return new class extends Migration
 
 
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade')->onUpdate('cascade');
-            
+
         });
     }
 
     /**
      * Reverse the migrations.
      */
+    
     public function down(): void
     {
         Schema::dropIfExists('products');
