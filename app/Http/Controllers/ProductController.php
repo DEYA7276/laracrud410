@@ -52,8 +52,6 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         
-        echo "Show productos";
-
         return view('products_show', compact('product'));
     }
 
@@ -62,7 +60,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        echo "Edit productos";
+        $brands=Brand::pluck('id','brand'); //ob¿tener datos especificos
+        return view('products_edit', compact('brands','product'));
+      
     }
 
     /**
@@ -70,7 +70,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        echo "Update productos";
+
+        $product->update($request->all()); // actualizamos los datos en la base de datos
+        return to_route('products.index') -> with('status', 'Producto Actualizado');
     }
 
     /**

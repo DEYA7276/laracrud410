@@ -62,6 +62,8 @@ Route::get('/showProducts/{product}', [App\Http\Controllers\ProductController::c
 */
 Route::resource('/products',App\Http\Controllers\ProductController::class);
 
+Route::resource('/brands',App\Http\Controllers\BrandController::class);
+
 Route::get('/clients', function () {
     return view('clients_index');
 }) ->name('clients');

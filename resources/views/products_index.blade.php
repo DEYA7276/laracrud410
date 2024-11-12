@@ -4,6 +4,7 @@
 <h2> Index products </h2>
 <br>
 <button><a href="{{route('products.create')}}">Crear  producto</a></button>
+<button><a href="{{route('brands.create')}}">Agregar marca</a></button>
 
 <table>
 
@@ -31,7 +32,7 @@
                 <td>
                     
                     <button><a href="{{route("products.show", $p)}}">Mostrar</a></button>
-                    <button><a href="">Editar</a></button>
+                    <button><a href="{{route("products.edit", $p)}}">Editar</a></button>
                     <button><a href="">Eliminar</a></button>
 
                 </td>
