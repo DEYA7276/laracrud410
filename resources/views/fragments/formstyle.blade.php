@@ -43,7 +43,7 @@
         border: 1px solid #000;
         border-radius:5px;
         display:block;
-        color:#fffff;
+        color:white;
         background-color: #000; 
     }
 

@@ -31,7 +31,8 @@
 
 
 <label for="">Imagen</label>
-<input type="text" name="imagen">
+<input type="file" name="imagen">
+
 
 <br>
 <button type="submit"> Registrar </button>
