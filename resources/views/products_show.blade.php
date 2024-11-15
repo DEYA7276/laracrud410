@@ -1,6 +1,7 @@
 @extends('layout.main_template')
 
 @section('content')
+<button><a href="{{route('products.index')}}">Productos</a></button>
 
 <h1>Detalles del producto</h1>
 

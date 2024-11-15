@@ -5,6 +5,7 @@
 
 @include('fragments.formstyle')
 <h1>Create de brand</h1>
+<button><a href="{{route('products.index')}}">Productos</a></button>
 
 <form action="{{route('brands.store')}}" method="POST">
 @csrf

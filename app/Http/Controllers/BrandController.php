@@ -29,7 +29,7 @@ class BrandController extends Controller
         //
         $brands=Brand::pluck('brand','description'); //ob¿tener datos especificos
         //dd($brands); //verificar datos que se extraen
-        return view('brand_create', compact('brands'));
+        return view('brand_create');
     }
 
     /**
@@ -47,23 +47,27 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+        return view('brand_show', compact('brand'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brand $brand)
-    {
-        //
-    }
+    
+        public function edit($id)
+{
+    $brand = Brand::findOrFail($id);  // Esto devuelve un solo objeto Brand
+    return view('brand_edit', compact('brand'));
+}
+    
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        $brand->update($request->all()); // actualizamos los datos en la base de datos
+        return to_route('brands.index') -> with('status', 'Marca Actualizada');
     }
 
     /**
@@ -71,6 +75,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return to_route('brands.index')->with('status','Marca Eliminada');
     }
 }

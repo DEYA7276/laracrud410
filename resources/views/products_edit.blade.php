@@ -5,6 +5,7 @@
 
 @include('fragments.formstyle')
 <h1>Editar productos</h1>
+<button><a href="{{route('products.index')}}">Productos</a></button>
 
 <form action="{{route('products.update', $product->id)}}" method="POST">
 @csrf

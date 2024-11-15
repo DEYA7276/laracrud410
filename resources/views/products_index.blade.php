@@ -5,6 +5,8 @@
 <br>
 <button><a href="{{route('products.create')}}">Crear  producto</a></button>
 <button><a href="{{route('brands.create')}}">Agregar marca</a></button>
+<button><a href="{{route('brands.index')}}">Marcas existentes</a></button>
+<button><a href="{{route('products.index')}}">Productos</a></button>
 
 <table>
 
@@ -33,8 +35,7 @@
                     
                     <button><a href="{{route("products.show", $p)}}">Mostrar</a></button>
                     <button><a href="{{route("products.edit", $p)}}">Editar</a></button>
-                    <button><a href="">Eliminar</a></button>
-
+                    <button><a href="{{route("products.delete", $p)}}">Eliminar</a></button>
                 </td>
             </tr>
         @endforeach

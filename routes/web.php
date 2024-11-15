@@ -73,8 +73,9 @@ Route::get('/sales', function () {
     return view('sales_index');
 }) ->name('sales');
 
+Route::put('/brands/{id}', [App\Http\Controllers\BrandController::class, 'update'])->name('brands.update');
 
-
+Route::get('/products/{product}/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
 
 
 
