@@ -65,19 +65,20 @@ Route::resource('/products',App\Http\Controllers\ProductController::class);
 Route::resource('/brands',App\Http\Controllers\BrandController::class);
 
 Route::get('/clients', function () {
-    return view('clients_index');
+    return view('admin/clients/index');
 }) ->name('clients');
 
 
 Route::get('/sales', function () {
-    return view('sales_index');
+    return view('admin/sale/index');
 }) ->name('sales');
 
 Route::put('/brands/{id}', [App\Http\Controllers\BrandController::class, 'update'])->name('brands.update');
 
 Route::get('/products/{product}/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
 
-
+Route::resource('/sales',App\Http\Controllers\SaleController::class);
+Route::resource('/clients',App\Http\Controllers\ClientController::class);
 
 
 
