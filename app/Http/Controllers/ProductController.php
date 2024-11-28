@@ -1,92 +1,114 @@
 <?php
+// app/Http/Controllers/ProductController.php
 
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Models\Brand;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Requests\Products\StoreRequest;
+
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar la lista de productos.
      */
-
     public function index()
     {
-
-        $products = Product::get(); //obtener todos los datos de la tabla
-        return view('admin/products/index', compact('products'));
-        //echo "Index productos";
-
+        $products = Product::paginate(6); // Obtener todos los productos
+        return view('admin.products.index', compact('products'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar el formulario para crear un nuevo producto.
      */
     public function create()
     {
-
-        //$brands=Brand::get();
-        //dd($brands); //verificar que los datos se esten extrayendo
-        $brands=Brand::pluck('id','brand'); //ob¿tener datos especificos
-        //dd($brands); //verificar datos que se extraen
-        return view('admin/products/create', compact('brands'));
+        // Obtener todas las marcas disponibles
+        $brands = Brand::pluck('brand', 'id'); // 'brand' es lo que mostramos, 'id' lo que se guarda
+        return view('admin.products.create', compact('brands'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacenar un nuevo producto.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-       // echo "Registro realizado";
-       // dd($request);
-       //dd($request->all());
-       Product::create($request->all());
-       return to_route('products.index') -> with('status', 'Producto registrado');
+        // Validar los datos del formulario
+        $validated = $request->validate([
+            'nameProducts' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id', 
+            'stock' => 'required|integer',
+            'unit_price' => 'required|numeric',
+            'imagen' => 'nullable|image|max:10240', 
+        ]);
+
+        // Si hay imagen, se guarda
+        if ($request->hasFile('imagen')) {
+            $filename = time() . '.' . $request->imagen->extension();
+            $request->imagen->move(public_path('image/products'), $filename);
+            $validated['imagen'] = $filename;
+        }
+
+        // Crear el producto
+        Product::create($validated);
+
+        return to_route('products.index')->with('status', 'Producto registrado');
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar un producto específico.
      */
     public function show(Product $product)
     {
-        
-        return view('admin/products/show', compact('product'));
+        return view('admin.products.show', compact('product'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar el formulario para editar un producto.
      */
     public function edit(Product $product)
     {
-        $brands=Brand::pluck('id','brand'); //ob¿tener datos especificos
-        return view('admin/products/edit', compact('brands','product'));
-      
+        $brands = Brand::pluck('brand', 'id'); // Obtener las marcas
+        return view('admin.products.edit', compact('product', 'brands'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar un producto.
      */
     public function update(Request $request, Product $product)
     {
+        // Validar los datos
+        $validated = $request->validate([
+            'nameProducts' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'stock' => 'required|integer',
+            'unit_price' => 'required|numeric',
+            'imagen' => 'nullable|image|max:10240',
+        ]);
 
-        $product->update($request->all()); // actualizamos los datos en la base de datos
-        return to_route('products.index') -> with('status', 'Producto Actualizado');
+        // Si se sube una nueva imagen, se guarda
+        if ($request->hasFile('imagen')) {
+            $filename = time() . '.' . $request->imagen->extension();
+            $request->imagen->move(public_path('image/products'), $filename);
+            $validated['imagen'] = $filename;
+        }
+
+        // Actualizar el producto
+        $product->update($validated);
+
+        return to_route('products.index')->with('status', 'Producto actualizado');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un producto.
      */
-
-     public function delete(Product $product){
-        echo view('admin/products/delete',compact('product'));
-     }
-
     public function destroy(Product $product)
     {
+        // Eliminar el producto
         $product->delete();
-        return to_route('products.index')->with('status','Producto Eliminado');
+
+        return to_route('products.index')->with('status', 'Producto eliminado');
     }
 }
